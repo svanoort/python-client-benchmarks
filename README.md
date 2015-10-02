@@ -24,24 +24,26 @@ Using Python 2.7.8
 
 ```
 Testing pycurl performance with 10000 cycles
-pycurl: ran 10000 HTTP GET requests in 5.63378810883 seconds
+pycurl: ran 10000 HTTP GET requests in 6.2360830307 seconds
 Testing pycurl (saving response body by cStringIO) performance with 10000 cycles
-pycurl (saving request body by cStringIO): ran 10000 HTTP GET requests in 5.61715292931 seconds
+pycurl (saving response body by cStringIO): ran 10000 HTTP GET requests in 6.18679094315 seconds
 Testing urllib3 performance with 10000 cycles
-urllib3: ran 10000 HTTP GET requests in 9.55537605286 seconds
+urllib3: ran 10000 HTTP GET requests in 9.88711500168 seconds
 Testing urllib2 performance with 10000 cycles
-urllib2: ran 10000 HTTP GET requests in 8.73536992073 seconds
+urllib2: ran 10000 HTTP GET requests in 9.054500103 seconds
 Testing urllib performance with 10000 cycles
-urllib: ran 10000 HTTP GET requests in 9.98209905624 seconds
+urllib: ran 10000 HTTP GET requests in 10.8962438107 seconds
 Testing 'requests' performance with 10000 cycles
-'requests': ran 10000 HTTP GET requests in 17.902536869 seconds
-Testing pycurl (saving request body by cStringIO)  CONNECTION REUSE performance with 10000 cycles
-pycurl (saving response body by cStringIO)  with curl handle + CONNECTION REUSE: ran 10000 HTTP GET requests in 0.010255 seconds
+'requests': ran 10000 HTTP GET requests in 21.4645440578 seconds
+Testing pycurl (saving response body by cStringIO BUT MAKING A NEW HANDLE EVERY TIME)  performance with 10000 cycles
+pycurl (saving response body by cStringIO BUT MAKING A NEW HANDLE EVERY TIME)  with CONNECTION REUSE: ran 10000 HTTP GET requests in 6.031294 seconds
+Testing pycurl (saving response body by cStringIO)  CONNECTION REUSE performance with 10000 cycles
+pycurl (saving response body by cStringIO)  with CONNECTION REUSE: ran 10000 HTTP GET requests in 1.608877 seconds
 Testing urllib3 CONNECTION REUSE performance with 10000 cycles
-urllib3 with CONNECTION REUSE: ran 10000 HTTP GET requests in 5.368338 seconds
+urllib3 with CONNECTION REUSE: ran 10000 HTTP GET requests in 5.654499 seconds
 ```
 
-**Note that pycurl with Curl handle reuse can do the same work in 0.01 seconds that requests does in 17.90 seconds.**  *No, that is not a bug, I verified it's really submitting separate requests.*
+**Note that pycurl with Curl handle reuse can do the same work in 1.6 seconds that requests does in 17.90 seconds.**  
 
 # Docker Building It (issues with the base image currently)
 ```shell

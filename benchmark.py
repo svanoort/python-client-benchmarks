@@ -11,7 +11,6 @@ except:
         from StringIO import StringIO
     except ImportError:
         from io import StringIO
-from cStringIO import StringIO
 import requests, urllib, urllib2, urllib3
 
 CYCLES = 10000
@@ -30,7 +29,7 @@ print('{0}: ran {1} HTTP GET requests in {2} seconds'.format(LIBRARY, CYCLES, my
 # About 6 sec
 LIBRARY="pycurl (saving response body by cStringIO)"
 print ("Testing {0} performance with {1} cycles".format(LIBRARY, CYCLES))
-mytime = timeit.timeit("mycurl.perform()",
+mytime = timeit.timeit("mycurl.perform();",
     setup="from pycurl import Curl; from cStringIO import StringIO; \
       mycurl=Curl(); \
       mycurl.setopt(mycurl.URL, '{0}'); \
@@ -65,6 +64,23 @@ print('{0}: ran {1} HTTP GET requests in {2} seconds'.format(LIBRARY, CYCLES, my
 
 ###  CONNECTION REUSE TESTS FOLLOW ###
 
+LIBRARY="pycurl (saving response body by cStringIO BUT MAKING A NEW HANDLE EVERY TIME) "
+print ("Testing {0} performance with {1} cycles".format(LIBRARY, CYCLES))
+start = time.clock()
+for i in xrange(1, CYCLES):
+    mycurl=Curl();
+    mycurl.setopt(mycurl.URL, URL)
+    body = StringIO();
+    mycurl.setopt(mycurl.WRITEDATA, body)
+    mycurl.perform()
+    output = body.getvalue()
+    body.close()
+    mycurl.close()
+end = time.clock()
+
+
+print('{0} with CONNECTION REUSE: ran {1} HTTP GET requests in {2} seconds'.format(LIBRARY, CYCLES, (end-start)))
+
 LIBRARY="pycurl (saving response body by cStringIO) "
 print ("Testing {0} CONNECTION REUSE performance with {1} cycles".format(LIBRARY, CYCLES))
 mycurl=Curl();
@@ -74,6 +90,7 @@ start = time.clock()
 for i in xrange(1, CYCLES):
     body = StringIO();
     mycurl.setopt(mycurl.WRITEDATA, body)
+    mycurl.perform()
     output = body.getvalue()
     body.close()
 end = time.clock()
