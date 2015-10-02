@@ -36,7 +36,7 @@ urllib: ran 10000 HTTP GET requests in 10.8962438107 seconds
 Testing 'requests' performance with 10000 cycles
 'requests': ran 10000 HTTP GET requests in 21.4645440578 seconds
 Testing pycurl (saving response body by cStringIO BUT MAKING A NEW HANDLE EVERY TIME)  performance with 10000 cycles
-pycurl (saving response body by cStringIO BUT MAKING A NEW HANDLE EVERY TIME)  with CONNECTION REUSE: ran 10000 HTTP GET requests in 6.031294 seconds
+pycurl (saving response body by cStringIO BUT MAKING A NEW HANDLE EVERY TIME): ran 10000 HTTP GET requests in 6.031294 seconds
 Testing pycurl (saving response body by cStringIO)  CONNECTION REUSE performance with 10000 cycles
 pycurl (saving response body by cStringIO)  with CONNECTION REUSE: ran 10000 HTTP GET requests in 1.608877 seconds
 Testing urllib3 CONNECTION REUSE performance with 10000 cycles

@@ -79,7 +79,7 @@ for i in xrange(1, CYCLES):
 end = time.clock()
 
 
-print('{0} with CONNECTION REUSE: ran {1} HTTP GET requests in {2} seconds'.format(LIBRARY, CYCLES, (end-start)))
+print('{0}: ran {1} HTTP GET requests in {2} seconds'.format(LIBRARY, CYCLES, (end-start)))
 
 LIBRARY="pycurl (saving response body by cStringIO) "
 print ("Testing {0} CONNECTION REUSE performance with {1} cycles".format(LIBRARY, CYCLES))
