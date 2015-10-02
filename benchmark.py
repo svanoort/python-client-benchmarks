@@ -28,7 +28,7 @@ mytime = timeit.timeit("mycurl.perform()",
 print('{0}: ran {1} HTTP GET requests in {2} seconds'.format(LIBRARY, CYCLES, mytime))
 
 # About 6 sec
-LIBRARY="pycurl (saving request body by cStringIO)"
+LIBRARY="pycurl (saving response body by cStringIO)"
 print ("Testing {0} performance with {1} cycles".format(LIBRARY, CYCLES))
 mytime = timeit.timeit("mycurl.perform()",
     setup="from pycurl import Curl; from cStringIO import StringIO; \
@@ -65,7 +65,7 @@ print('{0}: ran {1} HTTP GET requests in {2} seconds'.format(LIBRARY, CYCLES, my
 
 ###  CONNECTION REUSE TESTS FOLLOW ###
 
-LIBRARY="pycurl (saving request body by cStringIO) "
+LIBRARY="pycurl (saving response body by cStringIO) "
 print ("Testing {0} CONNECTION REUSE performance with {1} cycles".format(LIBRARY, CYCLES))
 mycurl=Curl();
 mycurl.setopt(mycurl.URL, URL)

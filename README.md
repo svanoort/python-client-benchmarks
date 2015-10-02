@@ -23,7 +23,7 @@ Using Python 2.7.8
 
 Testing pycurl performance with 10000 cycles
 pycurl: ran 10000 HTTP GET requests in 5.63378810883 seconds
-Testing pycurl (saving request body by cStringIO) performance with 10000 cycles
+Testing pycurl (saving response body by cStringIO) performance with 10000 cycles
 pycurl (saving request body by cStringIO): ran 10000 HTTP GET requests in 5.61715292931 seconds
 Testing urllib3 performance with 10000 cycles
 urllib3: ran 10000 HTTP GET requests in 9.55537605286 seconds
@@ -34,7 +34,7 @@ urllib: ran 10000 HTTP GET requests in 9.98209905624 seconds
 Testing 'requests' performance with 10000 cycles
 'requests': ran 10000 HTTP GET requests in 17.902536869 seconds
 Testing pycurl (saving request body by cStringIO)  CONNECTION REUSE performance with 10000 cycles
-**pycurl (saving request body by cStringIO)  with CONNECTION REUSE: ran 10000 HTTP GET requests in 0.010255 seconds** *No, that is not a bug, I verified it's really submitting separate requests.*
+**pycurl (saving response body by cStringIO)  with CONNECTION REUSE: ran 10000 HTTP GET requests in 0.010255 seconds** *No, that is not a bug, I verified it's really submitting separate requests.*
 Testing urllib3 CONNECTION REUSE performance with 10000 cycles
 urllib3 with CONNECTION REUSE: ran 10000 HTTP GET requests in 5.368338 seconds
 
