@@ -36,12 +36,12 @@ urllib: ran 10000 HTTP GET requests in 9.98209905624 seconds
 Testing 'requests' performance with 10000 cycles
 'requests': ran 10000 HTTP GET requests in 17.902536869 seconds
 Testing pycurl (saving request body by cStringIO)  CONNECTION REUSE performance with 10000 cycles
-**pycurl (saving response body by cStringIO)  with curl handle + CONNECTION REUSE: ran 10000 HTTP GET requests in 0.010255 seconds** *No, that is not a bug, I verified it's really submitting separate requests.*
+pycurl (saving response body by cStringIO)  with curl handle + CONNECTION REUSE: ran 10000 HTTP GET requests in 0.010255 seconds
 Testing urllib3 CONNECTION REUSE performance with 10000 cycles
 urllib3 with CONNECTION REUSE: ran 10000 HTTP GET requests in 5.368338 seconds
 ```
 
-**Note that pycurl with Curl handle reuse can do the same work in 0.01 seconds that requests does in 17.90 seconds.**
+**Note that pycurl with Curl handle reuse can do the same work in 0.01 seconds that requests does in 17.90 seconds.**  *No, that is not a bug, I verified it's really submitting separate requests.*
 
 # Docker Building It (issues with the base image currently)
 ```shell
