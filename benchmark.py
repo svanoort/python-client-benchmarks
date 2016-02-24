@@ -122,7 +122,7 @@ if(__name__ == '__main__'):
     parser.add_argument('--url', metavar='u', type=str, default='http://localhost:5000/ping', help="URL to run requests against")
     parser.add_argument('--cycles', metavar='c', type=int, default=10000, help="Number of cycles to run")    
     parser.add_argument('--delay', metavar='d', type=float, help="Delay in seconds between requests")    
-    parser.add_argument('--output-file', metavar='o', type=str, help="Output file to write CSV results to")
+    parser.add_argument('--output-file', metavar='o', type=str, help="NOT YET SUPPORTED: output file to write CSV results to")
     args = vars(parser.parse_args())
     if args.get('url') is None:
         print("No URL supplied, you must supply a URL!")
