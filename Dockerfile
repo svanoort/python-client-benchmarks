@@ -7,5 +7,6 @@ ADD requirements.txt /tmp/
 RUN pip install -r /tmp/requirements.txt
 ADD app.py /tmp/
 ADD start.sh /tmp/
+ADD benchmark.py /tmp
 EXPOSE 5000
 CMD /tmp/start.sh
