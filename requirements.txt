@@ -1,0 +1,12 @@
+Flask==0.10.1
+gevent==1.0.2
+greenlet==0.4.9
+gunicorn==19.4.5
+itsdangerous==0.24
+Jinja2==2.8
+MarkupSafe==0.23
+pycurl==7.43.0
+requests==2.9.1
+urllib3==1.14
+Werkzeug==0.11.4
+wheel==0.29.0
