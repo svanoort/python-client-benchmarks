@@ -1,6 +1,9 @@
 #!/usr/bin/env python
+from os import urandom
 from flask import Flask
 app = Flask(__name__)
+
+response_cache = dict()
 
 @app.route("/ping")
 def hello():
@@ -31,6 +34,18 @@ def big_response():
         }
     }
 }'''
+
+@app.route("/length/<int:response_bytes>")
+def fix_length_response(response_bytes):
+    if response_bytes < 1:
+        raise Exception("Forbidded response length: {0}".format(response_bytes))
+    try:
+        response = response_cache[response_bytes]
+        return response
+    except KeyError:
+        response = urandom(response_bytes)
+        response_cache[response_bytes] = response
+        return response    
 
 if __name__ == "__main__":
     app.run()
