@@ -43,9 +43,10 @@ def run_all_benchmarks(url='', cycles=10, delay=0.05, **kwargs):
         "r = requests.get('$url')"))
     
     tests.append(('requests', True, '', 
-        'import requests; \
-            session = requests.Session()', 
-        "r = session.get('$url')"))
+        "import requests; \
+            session = requests.Session(); \
+            r = requests.Request('GET', '$url').prepare()", 
+        "v = session.send(r)"))
     
     # PyCurl
     tests.append(('pycurl', True, "Reuse handle, don't save body", 
