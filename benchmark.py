@@ -28,9 +28,7 @@ def run_test(library, url, cycles, connection_reuse, options, setup_test, run_te
         run_cmd = run_cmd + "; time.sleep({0})".format(delay)
     setup_cmd = string.Template(setup_test).substitute(url=url)
 
-    mytime = timeit.timeit(stmt=run_cmd,
-        setup=setup_cmd, 
-        number=cycles)
+    mytime = timeit.timeit(stmt=run_cmd, setup=setup_cmd, number=cycles)
     if delay:
         mytime = mytime - (delay * cycles)
 
@@ -70,7 +68,7 @@ def run_all_benchmarks(url='', cycles=10, delay=None, **kwargs):
             mycurl=Curl(); \
             mycurl.setopt(mycurl.URL, '$url')",
         "body = StringIO(); \
-            mycurl.setopt(mycurl.WRITEDATA, body); \
+            mycurl.setopt(mycurl.WRITEFUNCTION, body.write); \
             mycurl.perform(); \
             val = body.getvalue(); \
             body.close()"))
@@ -82,7 +80,7 @@ def run_all_benchmarks(url='', cycles=10, delay=None, **kwargs):
             body = StringIO(); \
             mycurl.setopt(mycurl.FORBID_REUSE, 1)",
         "body = StringIO(); \
-            mycurl.setopt(mycurl.WRITEDATA, body); \
+            mycurl.setopt(mycurl.WRITEFUNCTION, body.write); \
             mycurl.perform(); \
             val = body.getvalue(); \
             body.close()"))
@@ -93,7 +91,7 @@ def run_all_benchmarks(url='', cycles=10, delay=None, **kwargs):
             mycurl=Curl(); \
             body = StringIO(); \
             mycurl.setopt(mycurl.URL, '$url'); \
-            mycurl.setopt(mycurl.WRITEDATA, body); \
+            mycurl.setopt(mycurl.WRITEFUNCTION, body.write); \
             mycurl.perform(); \
             val = body.getvalue(); \
             body.close()"))
