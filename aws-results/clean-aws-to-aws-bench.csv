@@ -1,4 +1,4 @@
-Response_size,Requests Time (no cnxn reuse),pyCurl Time (no cnxn reuse),Requests Time (cnxn reuse),pyCurl Time (cnxn reuse)
+Response_size,Requests Time (cnxn reuse),pyCurl Time (no cnxn reuse),Requests Time (no cnxn reuse),pyCurl Time (cnxn reuse)
 4,10.57290005683899,12.881441116333008,20.69159984588623,7.185319900512695
 1024,11.267004013061523,12.047899007797241,21.88335609436035,6.80279803276062
 4096,11.35699200630188,12.302227020263672,21.16353702545166,7.973640203475952
