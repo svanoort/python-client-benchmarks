@@ -128,5 +128,5 @@ if(__name__ == '__main__'):
     if args.get('url') is None:
         print("No URL supplied, you must supply a URL!")
         exit(1)
-    print args
+    print('TESTING AGAINST URL: {0} with delay {1}'.format(args['url'],args['delay']))
     run_all_benchmarks(**args)
