@@ -1,0 +1,11 @@
+url,cycles,delay
+http://127.0.0.1:5000/ping,10000,
+Library,Reuse Connections?,Options,Time
+requests,False,,25.47342300415039
+requests,True,,13.206637144088745
+pycurl,True,"Reuse handle, don't save body",5.534171104431152
+pycurl,True,"Reuse handle, save response to new cStringIO buffer",5.84434700012207
+pycurl,False,"Reuse handle, save response to new cStringIO buffer",11.258882999420166
+pycurl,False,"New handle, save response to new cStringIO buffer",11.406111001968384
+urllib3,True,,9.463749885559082
+urllib,False,,16.082991123199463
