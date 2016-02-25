@@ -19,39 +19,45 @@ On an Xubuntu 14.10 box, CPU Intel(R) Core(TM) i5-3210M CPU @ 2.50GHz
 Using Python 2.7.8
 
 ```
+{'url': 'http://127.0.0.1:5000/length/10000', 'delay': None, 'cycles': 10000, 'output_file': None}
 START testing requests performance with 10000 cycles and connection reuse False
 Options: 
-END testing result: 26.9634430408
+END testing result: 22.4408450127
  
 START testing requests performance with 10000 cycles and connection reuse True
 Options: 
-END testing result: 13.2264149189
+END testing result: 11.0733878613
  
 START testing pycurl performance with 10000 cycles and connection reuse True
 Options: Reuse handle, don't save body
-END testing result: 6.24056100845
+END testing result: 4.75980710983
  
 START testing pycurl performance with 10000 cycles and connection reuse True
 Options: Reuse handle, save response to new cStringIO buffer
-END testing result: 6.03981900215
+END testing result: 5.14035511017
  
 START testing pycurl performance with 10000 cycles and connection reuse False
 Options: Reuse handle, save response to new cStringIO buffer
-END testing result: 12.0486500263
+END testing result: 8.09198617935
  
 START testing pycurl performance with 10000 cycles and connection reuse False
 Options: New handle, save response to new cStringIO buffer
-END testing result: 59.0295059681
+END testing result: 8.29376411438
  
 START testing urllib3 performance with 10000 cycles and connection reuse True
 Options: 
-END testing result: 9.26859688759
+END testing result: 7.5977909565
  
 START testing urllib2 performance with 10000 cycles and connection reuse False
 Options: 
-END testing result: 16.1479890347
+END testing result: 11.6811139584
  
 START testing urllib performance with 10000 cycles and connection reuse False
 Options: 
-END testing result: 17.7717568874
+END testing result: 13.2057569027
 ```
+
+Libraries for the local system:
+pycurl==7.21.5
+requests==2.2.1
+urllib3==1.7.1
