@@ -42,10 +42,10 @@ def run_size_benchmarks(url='', cycles=10, delay=None, output_file=None, **kwarg
     """ Run variable-size benchmarks, where URL is the base url """
     sizes = [4, 1024, 4096, 8192, 32768, 131072]
 
-    REQUESTS_REUSE = ('requests', False, 'Default', 
+    REQUESTS_NOREUSE = ('requests', False, 'Default', 
         'import requests', 
         "r = requests.get('$url')")
-    REQUESTS_NOREUSE = ('requests', True, 'Default', 
+    REQUESTS_REUSE = ('requests', True, 'Default', 
         "import requests; \
             session = requests.Session(); \
             r = requests.Request('GET', '$url').prepare()", 
