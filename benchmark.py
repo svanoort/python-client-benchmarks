@@ -3,6 +3,7 @@ import timeit
 import time
 import string
 import argparse
+import csv
 
 # Import clients, so script fails fast if not available
 from pycurl import Curl
@@ -37,7 +38,7 @@ def run_test(library, url, cycles, connection_reuse, options, setup_test, run_te
     result = (library, connection_reuse, options, cycles, mytime)
     return result
 
-def run_all_benchmarks(url='', cycles=10, delay=None, **kwargs):
+def run_all_benchmarks(url='', cycles=10, delay=None, output_file=None, **kwargs):
     results = list()
 
     headers = ('Library','Reuse Connections?','Options', 'Time')
@@ -105,9 +106,9 @@ def run_all_benchmarks(url='', cycles=10, delay=None, **kwargs):
         "body = http_pool.urlopen('GET', '$url').read()"))
     
     # URLLIB2
-    tests.append(('urllib2', False, '', 
-        "import urllib2",
-        "body = urllib2.urlopen('$url').read()"))
+    #tests.append(('urllib2', False, '', 
+    #    "import urllib2",
+    #    "body = urllib2.urlopen('$url').read()"))
 
     # URLLIB
     tests.append(('urllib', False, '', 
@@ -116,14 +117,23 @@ def run_all_benchmarks(url='', cycles=10, delay=None, **kwargs):
 
     for test in tests:
         my_result = run_test(test[0], url, cycles, test[1], test[2], test[3], test[4], delay=delay)
-        results.append((test[0], test[1], test[2], my_result))
+        results.append((test[0], test[1], test[2], my_result[-1]))
+
+    if output_file:
+        with open(output_file, 'wb') as csvfile:
+            outwriter = csv.writer(csvfile, dialect=csv.excel)
+            outwriter.writerow(('url', 'cycles', 'delay'))
+            outwriter.writerow((url, cycles, delay))
+            outwriter.writerow(headers)
+            for result in results:
+                outwriter.writerow(result)
 
 if(__name__ == '__main__'):
     parser = argparse.ArgumentParser(description="Benchmark different python request frameworks")
     parser.add_argument('--url', metavar='u', type=str, default='http://localhost:5000/ping', help="URL to run requests against")
     parser.add_argument('--cycles', metavar='c', type=int, default=10000, help="Number of cycles to run")    
     parser.add_argument('--delay', metavar='d', type=float, help="Delay in seconds between requests")    
-    parser.add_argument('--output-file', metavar='o', type=str, help="NOT YET SUPPORTED: output file to write CSV results to")
+    parser.add_argument('--output-file', metavar='o', type=str, help="Output file to write CSV results to")
     args = vars(parser.parse_args())
     if args.get('url') is None:
         print("No URL supplied, you must supply a URL!")
