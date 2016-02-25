@@ -1,0 +1,43 @@
+Environment config:
+
+# Host 1
+running the docker container for gunicorn, plus top to monitor
+- Each worker runs ~5% of a CPU, main gunicorn will spike to 35% or so rarely
+- load average around 25% initially, ramping up as benchmark progresses
+
+# Host 2: running benchmark
+python benchmark.py --cycles 10000 --url http://54.209.242.190:5000 --output-file clean-aws-to-aws-bench.csv | tee clean-aws-to-aws-run.log
+
+# Library versions 
+benchmark server (docker on AWS) - Dockerfile is debian base image
+	Flask==0.10.1
+	gevent==1.0.2
+	greenlet==0.4.9
+	gunicorn==19.4.5
+	itsdangerous==0.24
+	Jinja2==2.8
+	MarkupSafe==0.23
+	meinheld==0.5.8
+	pycurl==7.43.0
+	requests==2.9.1
+	urllib3==1.14
+	virtualenv==13.1.2
+	Werkzeug==0.11.4
+	wheel==0.29.0
+
+
+benchmark client - see client-pip-freeze.txt
+
+# BOTH running this linux:
+NAME="Amazon Linux AMI"
+VERSION="2015.09"
+ID="amzn"
+ID_LIKE="rhel fedora"
+VERSION_ID="2015.09"
+PRETTY_NAME="Amazon Linux AMI 2015.09"
+ANSI_COLOR="0;33"
+CPE_NAME="cpe:/o:amazon:linux:2015.09:ga"
+HOME_URL="http://aws.amazon.com/amazon-linux-ami/"
+Amazon Linux AMI release 2015.09
+
+*ALL* packages in yum updated to latest.
