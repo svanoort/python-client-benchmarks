@@ -85,12 +85,15 @@ def run_all_benchmarks(url='', cycles=10, delay=None, **kwargs):
             val = body.getvalue(); \
             body.close()"))
 
+    # The use of global DNS cache avoids a bug on some linux systems with libcurl 
+    #  playing badly with DNS resolvers
     tests.append(('pycurl', False, "New handle, save response to new cStringIO buffer", 
         "from pycurl import Curl; from cStringIO import StringIO",
         "body = StringIO(); \
             mycurl=Curl(); \
             body = StringIO(); \
             mycurl.setopt(mycurl.URL, '$url'); \
+            mycurl.setopt(mycurl.DNS_USE_GLOBAL_CACHE, True); \
             mycurl.setopt(mycurl.WRITEFUNCTION, body.write); \
             mycurl.perform(); \
             val = body.getvalue(); \
