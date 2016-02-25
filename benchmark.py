@@ -35,8 +35,62 @@ def run_test(library, url, cycles, connection_reuse, options, setup_test, run_te
 
     print("END testing result: {0}".format(mytime))
     print(' ')
-    result = (library, connection_reuse, options, cycles, mytime)
+    result = [library, connection_reuse, options, cycles, mytime]
     return result
+
+def run_size_benchmarks(url='', cycles=10, delay=None, output_file=None, **kwargs):
+    """ Run variable-size benchmarks, where URL is the base url """
+    sizes = [4, 1024, 4096, 8192, 32768, 131072]
+
+    REQUESTS_REUSE = ('requests', False, 'Default', 
+        'import requests', 
+        "r = requests.get('$url')")
+    REQUESTS_NOREUSE = ('requests', True, 'Default', 
+        "import requests; \
+            session = requests.Session(); \
+            r = requests.Request('GET', '$url').prepare()", 
+        "v = session.send(r)")
+    PYCURL_REUSE = ('pycurl', True, "Reuse handle, save response to new cStringIO buffer", 
+        "from pycurl import Curl; from cStringIO import StringIO; \
+            mycurl=Curl(); \
+            mycurl.setopt(mycurl.URL, '$url')",
+        "body = StringIO(); \
+            mycurl.setopt(mycurl.WRITEFUNCTION, body.write); \
+            mycurl.perform(); \
+            val = body.getvalue(); \
+            body.close()")
+    PYCURL_NOREUSE = ('pycurl', False, "Reuse handle, save response to new cStringIO buffer", 
+        "from pycurl import Curl; from cStringIO import StringIO; \
+            mycurl=Curl(); \
+            mycurl.setopt(mycurl.URL, '$url'); \
+            body = StringIO(); \
+            mycurl.setopt(mycurl.FORBID_REUSE, 1)",
+        "body = StringIO(); \
+            mycurl.setopt(mycurl.WRITEFUNCTION, body.write); \
+            mycurl.perform(); \
+            val = body.getvalue(); \
+            body.close()")
+
+    TEST_TYPES = [PYCURL_NOREUSE, REQUESTS_NOREUSE, REQUESTS_REUSE, PYCURL_REUSE]
+
+    all_results = list()
+
+    # Run tests 
+    for size in sizes:
+        temp_url = url +"/length/{0}".format(size)
+        for test in TEST_TYPES:
+            result = run_test(test[0], temp_url, cycles, test[1], test[2], test[3], test[4], delay=delay)
+            del result[3]  # Don't need cycles
+            result.insert(0, size)
+            all_results.append(result)
+    
+    headers = ('Response_size', 'Connection_Reuse', 'Library', 'Options' 'Time')
+    if output_file:
+        with open(output_file, 'wb') as csvfile:
+            outwriter = csv.writer(csvfile, dialect=csv.excel)
+            outwriter.writerow(headers)
+            for result in all_results:
+                outwriter.writerow(result)
 
 def run_all_benchmarks(url='', cycles=10, delay=None, output_file=None, **kwargs):
     results = list()
@@ -139,4 +193,4 @@ if(__name__ == '__main__'):
         print("No URL supplied, you must supply a URL!")
         exit(1)
     print('TESTING AGAINST URL: {0} with delay {1}'.format(args['url'],args['delay']))
-    run_all_benchmarks(**args)
+    run_size_benchmarks(**args)
