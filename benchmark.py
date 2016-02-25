@@ -71,7 +71,7 @@ def run_size_benchmarks(url='', cycles=10, delay=None, output_file=None, **kwarg
             val = body.getvalue(); \
             body.close()")
 
-    TEST_TYPES = [PYCURL_NOREUSE, REQUESTS_NOREUSE, REQUESTS_REUSE, PYCURL_REUSE]
+    TEST_TYPES = [REQUESTS_NOREUSE, PYCURL_NOREUSE, REQUESTS_REUSE, PYCURL_REUSE]
 
     all_results = list()
 
@@ -84,12 +84,21 @@ def run_size_benchmarks(url='', cycles=10, delay=None, output_file=None, **kwarg
             result.insert(0, size)
             all_results.append(result)
     
-    headers = ('Response_size', 'Connection_Reuse', 'Library', 'Options' 'Time')
+    # Transform tuples to size, time graphs for each response size
+    final_output = [[x, 0, 0, 0, 0] for x in sizes]
+    for i in xrange(0, len(sizes)):
+        final_output[i][1] = all_results[i*4][4]
+        final_output[i][2] = all_results[i*4+1][4]
+        final_output[i][3] = all_results[i*4+2][4]
+        final_output[i][4] = all_results[i*4+3][4]
+
+    headers = ('Response_size', 'Requests Time (no cnxn reuse)', 'pyCurl Time (no cnxn reuse)',
+               'Requests Time (cnxn reuse)', 'pyCurl Time (cnxn reuse)')
     if output_file:
         with open(output_file, 'wb') as csvfile:
             outwriter = csv.writer(csvfile, dialect=csv.excel)
             outwriter.writerow(headers)
-            for result in all_results:
+            for result in final_output:
                 outwriter.writerow(result)
 
 def run_all_benchmarks(url='', cycles=10, delay=None, output_file=None, **kwargs):
