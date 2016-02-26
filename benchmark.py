@@ -197,8 +197,8 @@ if(__name__ == '__main__'):
     parser.add_argument('--url', metavar='u', type=str, default='http://localhost:5000/ping', help="URL to run requests against")
     parser.add_argument('--cycles', metavar='c', type=int, default=10000, help="Number of cycles to run")    
     parser.add_argument('--delay', metavar='d', type=float, help="Delay in seconds between requests")    
-    parser.add_argument('--output-file', metavar='o', type=str, help="Output file to write CSV results to")
-    parser.add_argument("--benchmark-type", type=str, default="full", help="Benchmark type to run: full=all libraries, 1 request, size=basic pycurl/requests tests with different request sizes")
+    parser.add_argument('--output-file', metavar='o', nargs='?', type=str, help="Output file to write CSV results to")
+    parser.add_argument('--benchmark-type', type=str, default="full", choices=('full','size'), help="Benchmark type to run: full=all libraries, 1 request, size=basic pycurl/requests tests with different request sizes")
     parser.add_argument('--length-api-format', metavar='l', type=str, default="/length/$length", help="Template for API request that accepts response length parameter, for size benchmarks")
     args = vars(parser.parse_args())
     if args.get('url') is None:
