@@ -40,7 +40,8 @@ def run_test(library, url, cycles, connection_reuse, options, setup_test, run_te
 
 def run_size_benchmarks(url='', cycles=10, delay=None, output_file=None, length_api_format='/length/$length', **kwargs):
     """ Run variable-size benchmarks, where URL is the base url """
-    sizes = [4, 1024, 4096, 8192, 32768, 131072]
+	# This will generate approximately 10 GB of total traffic to host    
+	sizes = [4, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536, 131072]
 
     REQUESTS_REUSE = ('requests', False, 'Default', 
         'import requests', 
