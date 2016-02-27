@@ -45,6 +45,14 @@ def run_test(library, url, cycles, connection_reuse, options, setup_test, run_te
     return result
 
 def run_size_benchmarks(url='', cycles=10, delay=None, output_file=None, length_api_format='/length/$length', **kwargs):
+    timer_type = kwargs.get('timer')
+    TIMER = timeit.default_timer
+
+    if timer_type and timer_type.lower() == 'cpu':
+        TIMER = time.clock  # Linux only
+
+
+
     """ Run variable-size benchmarks, where URL is the base url """
     sizes = [4, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536, 131072]  # Yields ~10 GB of traffic, be careful!
 
@@ -116,6 +124,12 @@ def run_all_benchmarks(url='', cycles=10, delay=None, output_file=None, **kwargs
 
     headers = ('Library','Reuse Connections?','Options', 'Time')
     tests = list()
+
+    timer_type = kwargs.get('timer')
+    TIMER = timeit.default_timer
+
+    if timer_type and timer_type.lower() == 'cpu':
+        TIMER = time.clock  # Linux only
 
     # Library, cnxn_reuse, options, setup, run_stmt
     # Requests
@@ -222,13 +236,14 @@ if(__name__ == '__main__'):
     parser.add_argument('--cycles', metavar='c', type=int, default=10000, help="Number of cycles to run")    
     parser.add_argument('--delay', metavar='d', type=float, help="Delay in seconds between requests")    
     parser.add_argument('--output-file', metavar='o', nargs='?', type=str, help="Output file to write CSV results to")
-    parser.add_argument('--benchmark-type', type=str, default="full", choices=('full','size'), help="Benchmark type to run: full=all libraries, 1 request, size=basic pycurl/requests tests with different request sizes")
+    parser.add_argument('--benchmark-type', type=str, default="full", choices=('full','size'), help="Benchmark type to run:  full [default]=all libraries, 1 request, size=basic pycurl/requests tests with different request sizes")
+    parser.add_argument('--timer', type=str, default="real", choices=('real','cpu'), help="Timer type: real [default] or cpu")
     parser.add_argument('--length-api-format', metavar='l', type=str, default="/length/$length", help="Template for API request that accepts response length parameter, for size benchmarks")
     args = vars(parser.parse_args())
     if args.get('url') is None:
         print("No URL supplied, you must supply a URL!")
         exit(1)
-    print('TESTING AGAINST BASE URL: {0} with delay {1}'.format(args['url'],args['delay']))
+    print('RUNNING PYTHON CLIENT BENCHMARKS WITH ARGS: {0}'.format(args))
     
     if args['benchmark_type'] == 'full':
         run_all_benchmarks(**args)
