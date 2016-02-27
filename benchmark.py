@@ -4,6 +4,12 @@ import time
 import string
 import argparse
 import csv
+import sys
+
+if sys.version_info[0] > 2:
+    import urllib.parse as urlparse    
+else:
+    import urlparse
 
 # Import clients, so script fails fast if not available
 from pycurl import Curl
@@ -40,20 +46,21 @@ def run_test(library, url, cycles, connection_reuse, options, setup_test, run_te
 
 def run_size_benchmarks(url='', cycles=10, delay=None, output_file=None, length_api_format='/length/$length', **kwargs):
     """ Run variable-size benchmarks, where URL is the base url """
-	# This will generate approximately 10 GB of total traffic to host    
-	sizes = [4, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536, 131072]
+    sizes = [4, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536, 131072]  # Yields ~10 GB of traffic, be careful!
 
     REQUESTS_NOREUSE = ('requests', False, 'Default', 
         'import requests', 
-        "r = requests.get('$url')")
+        "r = requests.get('$url', verify=False)")
     REQUESTS_REUSE = ('requests', True, 'Default', 
         "import requests; \
             session = requests.Session(); \
             r = requests.Request('GET', '$url').prepare()", 
-        "v = session.send(r)")
+        "v = session.send(r, verify=False)")
     PYCURL_REUSE = ('pycurl', True, "Reuse handle, save response to new cStringIO buffer", 
         "from pycurl import Curl; from cStringIO import StringIO; \
             mycurl=Curl(); \
+            mycurl.setopt(mycurl.SSL_VERIFYPEER, 0); \
+            mycurl.setopt(mycurl.SSL_VERIFYHOST, 0); \
             mycurl.setopt(mycurl.URL, '$url')",
         "body = StringIO(); \
             mycurl.setopt(mycurl.WRITEFUNCTION, body.write); \
@@ -64,6 +71,8 @@ def run_size_benchmarks(url='', cycles=10, delay=None, output_file=None, length_
         "from pycurl import Curl; from cStringIO import StringIO; \
             mycurl=Curl(); \
             mycurl.setopt(mycurl.URL, '$url'); \
+            mycurl.setopt(mycurl.SSL_VERIFYPEER, 0); \
+            mycurl.setopt(mycurl.SSL_VERIFYHOST, 0); \
             body = StringIO(); \
             mycurl.setopt(mycurl.FORBID_REUSE, 1)",
         "body = StringIO(); \
@@ -110,20 +119,22 @@ def run_all_benchmarks(url='', cycles=10, delay=None, output_file=None, **kwargs
 
     # Library, cnxn_reuse, options, setup, run_stmt
     # Requests
-    tests.append(('requests', False, '', 
+    tests.append(('requests', False, 'Default', 
         'import requests', 
-        "r = requests.get('$url')"))
+        "r = requests.get('$url', verify=False)"))
     
-    tests.append(('requests', True, '', 
+    tests.append(('requests', True, 'Default', 
         "import requests; \
             session = requests.Session(); \
             r = requests.Request('GET', '$url').prepare()", 
-        "v = session.send(r)"))
+        "v = session.send(r, verify=False)"))
     
     # PyCurl
     tests.append(('pycurl', True, "Reuse handle, don't save body", 
         "from pycurl import Curl; \
             mycurl=Curl(); \
+            mycurl.setopt(mycurl.SSL_VERIFYPEER, 0); \
+            mycurl.setopt(mycurl.SSL_VERIFYHOST, 0); \
             mycurl.setopt(mycurl.URL, '$url'); \
             mycurl.setopt(mycurl.WRITEFUNCTION, lambda x: None)",
         "mycurl.perform()"))
@@ -131,6 +142,8 @@ def run_all_benchmarks(url='', cycles=10, delay=None, output_file=None, **kwargs
     tests.append(('pycurl', True, "Reuse handle, save response to new cStringIO buffer", 
         "from pycurl import Curl; from cStringIO import StringIO; \
             mycurl=Curl(); \
+            mycurl.setopt(mycurl.SSL_VERIFYPEER, 0); \
+            mycurl.setopt(mycurl.SSL_VERIFYHOST, 0); \
             mycurl.setopt(mycurl.URL, '$url')",
         "body = StringIO(); \
             mycurl.setopt(mycurl.WRITEFUNCTION, body.write); \
@@ -142,6 +155,8 @@ def run_all_benchmarks(url='', cycles=10, delay=None, output_file=None, **kwargs
         "from pycurl import Curl; from cStringIO import StringIO; \
             mycurl=Curl(); \
             mycurl.setopt(mycurl.URL, '$url'); \
+            mycurl.setopt(mycurl.SSL_VERIFYPEER, 0); \
+            mycurl.setopt(mycurl.SSL_VERIFYHOST, 0); \
             body = StringIO(); \
             mycurl.setopt(mycurl.FORBID_REUSE, 1)",
         "body = StringIO(); \
@@ -158,6 +173,8 @@ def run_all_benchmarks(url='', cycles=10, delay=None, output_file=None, **kwargs
             mycurl=Curl(); \
             body = StringIO(); \
             mycurl.setopt(mycurl.URL, '$url'); \
+            mycurl.setopt(mycurl.SSL_VERIFYPEER, 0); \
+            mycurl.setopt(mycurl.SSL_VERIFYHOST, 0); \
             mycurl.setopt(mycurl.DNS_USE_GLOBAL_CACHE, True); \
             mycurl.setopt(mycurl.WRITEFUNCTION, body.write); \
             mycurl.perform(); \
@@ -165,8 +182,15 @@ def run_all_benchmarks(url='', cycles=10, delay=None, output_file=None, **kwargs
             body.close()"))
 
     # URLLIB3
-    tests.append(('urllib3', True, '', 
-        "import urllib3; http_pool = urllib3.PoolManager()",
+    # Making URLLIB3 accept self-signed certs is a beast.  You have to create a connection pool with the hostname and port supplied.
+    # See: http://stackoverflow.com/questions/18061640/ignore-certificate-validation-with-urllib3
+    # Yes, there's an option to bypass hostname verification but I cannot make it play nicely.
+    hostname = urlparse.urlparse(url).hostname
+    port = urlparse.urlparse(url).port
+    setup_string = "import urllib3; \
+        http_pool = urllib3.HTTPSConnectionPool('{0}', port={1}, cert_reqs='CERT_NONE', assert_hostname=False)".format(hostname, port)
+    tests.append(('urllib3', True, 'Default', 
+        setup_string,
         "body = http_pool.urlopen('GET', '$url').read()"))
     
     # URLLIB2
@@ -175,7 +199,7 @@ def run_all_benchmarks(url='', cycles=10, delay=None, output_file=None, **kwargs
     #    "body = urllib2.urlopen('$url').read()"))
 
     # URLLIB
-    tests.append(('urllib', False, '', 
+    tests.append(('urllib', False, 'Default', 
         "import urllib",
         "body = urllib.urlopen('$url').read()"))
 
