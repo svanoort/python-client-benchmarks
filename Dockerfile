@@ -8,5 +8,5 @@ RUN pip install -r /tmp/requirements.txt
 ADD app.py /tmp/
 ADD benchmark.py /tmp/
 ADD etc /etc
-EXPOSE 80 443 5000
+EXPOSE 80 443
 CMD /usr/local/bin/supervisord -c /etc/supervisord.conf -n
