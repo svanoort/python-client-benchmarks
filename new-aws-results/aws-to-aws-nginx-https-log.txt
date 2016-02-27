@@ -1,0 +1,161 @@
+RUNNING PYTHON CLIENT BENCHMARKS WITH ARGS: {'benchmark_type': 'size', 'url': 'https://172.31.22.99:4443', 'output_file': 'new-aws-results/aws-to-aws-nginx-https.csv', 'length_api_format': '/length/$length', 'timer': 'real', 'delay': None, 'cycles': 10000}
+START testing requests performance with 10000 cycles and connection reuse False
+Options: Default
+END testing result: 66.2797119617
+ 
+START testing pycurl performance with 10000 cycles and connection reuse False
+Options: Reuse handle, save response to new cStringIO buffer
+END testing result: 51.8629419804
+ 
+START testing requests performance with 10000 cycles and connection reuse True
+Options: Default
+END testing result: 9.38851308823
+ 
+START testing pycurl performance with 10000 cycles and connection reuse True
+Options: Reuse handle, save response to new cStringIO buffer
+END testing result: 5.34046697617
+ 
+START testing requests performance with 10000 cycles and connection reuse False
+Options: Default
+END testing result: 66.8333380222
+ 
+START testing pycurl performance with 10000 cycles and connection reuse False
+Options: Reuse handle, save response to new cStringIO buffer
+END testing result: 51.9635019302
+ 
+START testing requests performance with 10000 cycles and connection reuse True
+Options: Default
+END testing result: 9.77584195137
+ 
+START testing pycurl performance with 10000 cycles and connection reuse True
+Options: Reuse handle, save response to new cStringIO buffer
+END testing result: 5.38053202629
+ 
+START testing requests performance with 10000 cycles and connection reuse False
+Options: Default
+END testing result: 66.8216319084
+ 
+START testing pycurl performance with 10000 cycles and connection reuse False
+Options: Reuse handle, save response to new cStringIO buffer
+END testing result: 52.3351421356
+ 
+START testing requests performance with 10000 cycles and connection reuse True
+Options: Default
+END testing result: 10.0024781227
+ 
+START testing pycurl performance with 10000 cycles and connection reuse True
+Options: Reuse handle, save response to new cStringIO buffer
+END testing result: 5.66623306274
+ 
+START testing requests performance with 10000 cycles and connection reuse False
+Options: Default
+END testing result: 67.7904028893
+ 
+START testing pycurl performance with 10000 cycles and connection reuse False
+Options: Reuse handle, save response to new cStringIO buffer
+END testing result: 52.4550571442
+ 
+START testing requests performance with 10000 cycles and connection reuse True
+Options: Default
+END testing result: 10.1322968006
+ 
+START testing pycurl performance with 10000 cycles and connection reuse True
+Options: Reuse handle, save response to new cStringIO buffer
+END testing result: 5.43412184715
+ 
+START testing requests performance with 10000 cycles and connection reuse False
+Options: Default
+END testing result: 67.6386539936
+ 
+START testing pycurl performance with 10000 cycles and connection reuse False
+Options: Reuse handle, save response to new cStringIO buffer
+END testing result: 52.2720389366
+ 
+START testing requests performance with 10000 cycles and connection reuse True
+Options: Default
+END testing result: 9.88404893875
+ 
+START testing pycurl performance with 10000 cycles and connection reuse True
+Options: Reuse handle, save response to new cStringIO buffer
+END testing result: 5.7314748764
+ 
+START testing requests performance with 10000 cycles and connection reuse False
+Options: Default
+END testing result: 68.7334909439
+ 
+START testing pycurl performance with 10000 cycles and connection reuse False
+Options: Reuse handle, save response to new cStringIO buffer
+END testing result: 52.7093029022
+ 
+START testing requests performance with 10000 cycles and connection reuse True
+Options: Default
+END testing result: 10.0503089428
+ 
+START testing pycurl performance with 10000 cycles and connection reuse True
+Options: Reuse handle, save response to new cStringIO buffer
+END testing result: 5.95487594604
+ 
+START testing requests performance with 10000 cycles and connection reuse False
+Options: Default
+END testing result: 70.8917779922
+ 
+START testing pycurl performance with 10000 cycles and connection reuse False
+Options: Reuse handle, save response to new cStringIO buffer
+END testing result: 52.7499680519
+ 
+START testing requests performance with 10000 cycles and connection reuse True
+Options: Default
+END testing result: 10.9544801712
+ 
+START testing pycurl performance with 10000 cycles and connection reuse True
+Options: Reuse handle, save response to new cStringIO buffer
+END testing result: 6.20383906364
+ 
+START testing requests performance with 10000 cycles and connection reuse False
+Options: Default
+END testing result: 74.9721329212
+ 
+START testing pycurl performance with 10000 cycles and connection reuse False
+Options: Reuse handle, save response to new cStringIO buffer
+END testing result: 53.9341640472
+ 
+START testing requests performance with 10000 cycles and connection reuse True
+Options: Default
+END testing result: 11.3531861305
+ 
+START testing pycurl performance with 10000 cycles and connection reuse True
+Options: Reuse handle, save response to new cStringIO buffer
+END testing result: 7.66211104393
+ 
+START testing requests performance with 10000 cycles and connection reuse False
+Options: Default
+END testing result: 83.4859700203
+ 
+START testing pycurl performance with 10000 cycles and connection reuse False
+Options: Reuse handle, save response to new cStringIO buffer
+END testing result: 54.8916041851
+ 
+START testing requests performance with 10000 cycles and connection reuse True
+Options: Default
+END testing result: 12.7472310066
+ 
+START testing pycurl performance with 10000 cycles and connection reuse True
+Options: Reuse handle, save response to new cStringIO buffer
+END testing result: 8.380215168
+ 
+START testing requests performance with 10000 cycles and connection reuse False
+Options: Default
+END testing result: 105.01751709
+ 
+START testing pycurl performance with 10000 cycles and connection reuse False
+Options: Reuse handle, save response to new cStringIO buffer
+END testing result: 56.5848228931
+ 
+START testing requests performance with 10000 cycles and connection reuse True
+Options: Default
+END testing result: 18.8322598934
+ 
+START testing pycurl performance with 10000 cycles and connection reuse True
+Options: Reuse handle, save response to new cStringIO buffer
+END testing result: 21.228456974
+ 
