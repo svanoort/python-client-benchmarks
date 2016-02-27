@@ -199,10 +199,19 @@ def run_all_benchmarks(url='', cycles=10, delay=None, output_file=None, **kwargs
     # Making URLLIB3 accept self-signed certs is a beast.  You have to create a connection pool with the hostname and port supplied.
     # See: http://stackoverflow.com/questions/18061640/ignore-certificate-validation-with-urllib3
     # Yes, there's an option to bypass hostname verification but I cannot make it play nicely.
-    hostname = urlparse.urlparse(url).hostname
-    port = urlparse.urlparse(url).port
-    setup_string = "import urllib3; \
-        http_pool = urllib3.HTTPSConnectionPool('{0}', port={1}, cert_reqs='CERT_NONE', assert_hostname=False)".format(hostname, port)
+    
+    parsed_url = urlparse.urlparse(url)
+    scheme = parsed_url.scheme
+    hostname = uparsed_url.hostname
+    port = parsed_url.port
+    
+    setup_string = ""
+    if scheme == 'https':
+        setup_string = "import urllib3; \
+            http_pool = urllib3.HTTPSConnectionPool('{0}', port={1}, cert_reqs='CERT_NONE', assert_hostname=False)".format(hostname, port)
+    else:
+        setup_string = "import urllib3; http_pool = urllib3.PoolManager()"
+
     tests.append(('urllib3', True, 'Default', 
         setup_string,
         "body = http_pool.urlopen('GET', '$url').read()"))
