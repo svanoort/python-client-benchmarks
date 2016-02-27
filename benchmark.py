@@ -194,7 +194,7 @@ def run_all_benchmarks(url='', cycles=10, delay=None, output_file=None, **kwargs
 
 if(__name__ == '__main__'):
     parser = argparse.ArgumentParser(description="Benchmark different python request frameworks")
-    parser.add_argument('--url', metavar='u', type=str, default='http://localhost:5000/ping', help="URL to run requests against")
+    parser.add_argument('--url', metavar='u', type=str, default='http://localhost:8080/ping', help="URL to run requests against")
     parser.add_argument('--cycles', metavar='c', type=int, default=10000, help="Number of cycles to run")    
     parser.add_argument('--delay', metavar='d', type=float, help="Delay in seconds between requests")    
     parser.add_argument('--output-file', metavar='o', nargs='?', type=str, help="Output file to write CSV results to")
