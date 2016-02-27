@@ -1,4 +1,17 @@
 NEW BENCHMARK CONFIG:
+
+# Run 1 & 2, aws to aws: AWS server to server, 2x AWS c4.large instances, running up to date Amazon linux 
+Installation from ../aws-setup.sh
+
+Benchmark results (CSV) saved to aws-to-aws-nginx-http.csv
+  Run log (terminal output) saved to aws-to-aws-nginx-http-log.txt
+
+Benchmark results (CSV) saved to aws-to-aws-nginx-https.csv
+  Run log (terminal output) saved to aws-to-aws-nginx-https-log.txt
+Server vmstat (every 10 sec with timestamp) - saved to vmstat-log-server-hit-by-client-https-test.txt
+
+
+
 -- DONE WITH COMMIT HASH 487d68134db541c01eaa977ac43aea64ba5baaab --
 
 Image v2.0 (pulled from dockerhub)
