@@ -202,7 +202,7 @@ def run_all_benchmarks(url='', cycles=10, delay=None, output_file=None, **kwargs
     
     parsed_url = urlparse.urlparse(url)
     scheme = parsed_url.scheme
-    hostname = uparsed_url.hostname
+    hostname = parsed_url.hostname
     port = parsed_url.port
     
     setup_string = ""
