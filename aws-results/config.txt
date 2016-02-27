@@ -1,0 +1,108 @@
+Environment config:
+
+# Host 1
+running the docker container for gunicorn, plus top to monitor
+- Each worker runs ~5% of a CPU, main gunicorn will spike to 35% or so rarely
+- load average around 25% initially, ramping up as benchmark progresses
+
+# Host 2: running benchmark
+python benchmark.py --cycles 10000 --url http://54.209.242.190:5000 --output-file clean-aws-to-aws-bench.csv | tee clean-aws-to-aws-run.log
+
+# Testing bandwidth available to hosts/CPU load
+# on client
+sudo yum install -y httpd-tools
+ab -n 10000 -c 1 http://54.86.170.38:5000/length/131072
+
+This is ApacheBench, Version 2.3 <$Revision: 655654 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking 54.86.170.38 (be patient)
+Completed 1000 requests
+Completed 2000 requests
+Completed 3000 requests
+Completed 4000 requests
+Completed 5000 requests
+Completed 6000 requests
+Completed 7000 requests
+Completed 8000 requests
+Completed 9000 requests
+Completed 10000 requests
+Finished 10000 requests
+
+
+Server Software:        meinheld/0.5.8
+Server Hostname:        54.86.170.38
+Server Port:            5000
+
+Document Path:          /length/131072
+Document Length:        131072 bytes
+
+Concurrency Level:      1
+Time taken for tests:   40.226 seconds
+Complete requests:      10000
+Failed requests:        0
+Write errors:           0
+Total transferred:      1312350000 bytes
+HTML transferred:       1310720000 bytes
+Requests per second:    248.59 [#/sec] (mean)
+Time per request:       4.023 [ms] (mean)
+Time per request:       4.023 [ms] (mean, across all concurrent requests)
+Transfer rate:          31859.52 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    0  10.0      0     997
+Processing:     3    4   0.3      4      10
+Waiting:        1    1   0.1      1       2
+Total:          3    4  10.0      4    1001
+
+Percentage of the requests served within a certain time (ms)
+  50%      4
+  66%      4
+  75%      4
+  80%      4
+  90%      4
+  95%      4
+  98%      5
+  99%      5
+ 100%   1001 (longest request)
+
+Setting ab concurrency to 32 reveals that transfer rate peaks at: 65038.82 [Kbytes/sec]
+Using private IPs it is similar (~68 MB/s in this case)
+
+Smaller requests (32kB) can do up to 100 MB/s, at 16 kB/req, ab reports 54 MB/s, at 8 kB, 28 MB/s
+
+# Library versions 
+benchmark server (docker on AWS) - Dockerfile is debian base image
+	Flask==0.10.1
+	gevent==1.0.2
+	greenlet==0.4.9
+	gunicorn==19.4.5
+	itsdangerous==0.24
+	Jinja2==2.8
+	MarkupSafe==0.23
+	meinheld==0.5.8
+	pycurl==7.43.0
+	requests==2.9.1
+	urllib3==1.14
+	virtualenv==13.1.2
+	Werkzeug==0.11.4
+	wheel==0.29.0
+
+
+benchmark client - see client-pip-freeze.txt
+
+# BOTH running this linux:
+NAME="Amazon Linux AMI"
+VERSION="2015.09"
+ID="amzn"
+ID_LIKE="rhel fedora"
+VERSION_ID="2015.09"
+PRETTY_NAME="Amazon Linux AMI 2015.09"
+ANSI_COLOR="0;33"
+CPE_NAME="cpe:/o:amazon:linux:2015.09:ga"
+HOME_URL="http://aws.amazon.com/amazon-linux-ami/"
+Amazon Linux AMI release 2015.09
+
+*ALL* packages in yum updated to latest.
