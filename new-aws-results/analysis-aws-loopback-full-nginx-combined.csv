@@ -1,0 +1,9 @@
+"Request Type, Loopback Tests",Time HTTP,Time HTTPS,RPS HTTP,RPS HTTPS
+"requests, reuse cnxns: False,  options: Default",17.9431548119,68.3605918884,557.3155949917,146.2831102504
+"requests, reuse cnxns: True,  options: Default",9.3398239613,9.9119582176,1070.6839916342,1008.8823802972
+"pycurl, reuse cnxns: True,  options: Reuse handle, don't save body",4.4494130611,5.3125281334,2247.4874466776,1882.3429728577
+"pycurl, reuse cnxns: True,  options: Reuse handle, save response to new buffer",4.511715889,5.3417470455,2216.451621972,1872.04671333
+"pycurl, reuse cnxns: False,  options: Reuse handle, save response to new buffer",6.9308688641,52.8162779808,1442.8205461881,189.3355681677
+"pycurl, reuse cnxns: False,  options: New handle, save response to new buffer",7.1117880344,52.9956769943,1406.1161485093,188.6946363771
+"urllib3, reuse cnxns: True,  options: Default",7.6050460339,,1314.916432521,
+"urllib, reuse cnxns: False,  options: Default",11.0761761665,,902.8386556557,
