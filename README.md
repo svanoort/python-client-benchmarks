@@ -37,15 +37,17 @@ PyCurl is much faster than Requests (or other HTTP client libraries), generally 
 
 On this system:
 * pycurl takes about 73 CPU-microseconds to issue a request when reusing a connection
-* requests takes about ****526 CPU-microseconds to issue a request when reusing a connection
+* requests takes about **526 CPU-microseconds** to issue a request when reusing a connection
 * pycurl takes about 165 CPU-microseconds to *open a new connection* and issue a request (no connection reuse), or ~92 microseconds to open
 * requests takes about **1078** CPU-microseconds to *open a new connection* and issue a request (no connection reuse), or ~552 microseconds to open
 
 # Benchmark Setup
 
-Testing with two c4.large instances in AWS, one running a client, and the other running the server. 
-For loopback tests, both are run on the same (client) system. 
-Logs were collected from each benchmark run, along with vmstat dumps to verify that the CPU was never fully loaded (and never a bottleneck).
+* Testing with two c4.large instances in AWS, one running a client, and the other running the server. 
+* All tests issued 10000 sequential requests to minimize the impact of noise
+* Timing was done using timeit, to separate initial setup & library loading from actual request time. 
+* For loopback tests, both are run on the same (client) system, to measure performance without bandwidth limits. 
+* Logs were collected from each benchmark run, along with vmstat dumps to verify that the CPU was never fully loaded (and never a bottleneck).
 
 Specs: 
 
