@@ -40,6 +40,7 @@ On this system:
 * requests takes about **526 CPU-microseconds** to issue a request when reusing a connection
 * pycurl takes about 165 CPU-microseconds to *open a new connection* and issue a request (no connection reuse), or ~92 microseconds to open
 * requests takes about **1078** CPU-microseconds to *open a new connection* and issue a request (no connection reuse), or ~552 microseconds to open
+* CPU-limited peak throughput with PyCurl is *roughly* 50%-100% better than requests with very large request sizes, assuming an extremely fast network connection relative to CPU (in this case several GBit)
 
 # Benchmark Setup
 
