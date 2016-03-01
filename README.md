@@ -35,6 +35,11 @@ python benchmark.py http://host:port/
 
 PyCurl is much faster than Requests (or other HTTP client libraries), generally completing smaller requests 2-3x as fast, and requires 3-10x less CPU time.  This is most visible with connection creation for small requests; given large enough requests (above 100 kB/s), Requests can still saturate a fast connection quite easily even without concurrent HTTP requests (assuming that all post-request processing is done separately) on a fast CPU.
 
+On this system:
+* pycurl takes about 73 CPU-microseconds to issue a request when reusing a connection
+* requests takes about ****526 CPU-microseconds to issue a request when reusing a connection
+* pycurl takes about 165 CPU-microseconds to *open a new connection* and issue a request (no connection reuse), or ~92 microseconds to open
+* requests takes about **1078** CPU-microseconds to *open a new connection* and issue a request (no connection reuse), or ~552 microseconds to open
 
 # Benchmark Setup
 
@@ -53,15 +58,17 @@ Specs:
 
 # Graphs
 
-![AWS-to-AWS RPS For HTTP](https://cdn.rawgit.com/svanoort/python-client-benchmarks/full-aws-benchmarks/aws-to-aws-http-rps.png)
+![AWS-to-AWS RPS For HTTP](https://cdn.rawgit.com/svanoort/python-client-benchmarks/master/aws-to-aws-http-rps.svg)
 
-![AWS-to-AWS Throughput For HTTP](https://cdn.rawgit.com/svanoort/python-client-benchmarks/full-aws-benchmarks/aws-to-aws-http-throughput.png)
+![AWS Loopback CPU use HTTP](https://cdn.rawgit.com/svanoort/python-client-benchmarks/master/aws-loopback-http-cputime.svg)
 
-![AWS-to-AWS Loopback](https://cdn.rawgit.com/svanoort/python-client-benchmarks/full-aws-benchmarks/aws-loopback-combined-chart.png)
+![AWS-to-AWS Throughput For HTTP](https://cdn.rawgit.com/svanoort/python-client-benchmarks/master/aws-to-aws-http-throughput.svg)
 
-![AWS-to-AWS RPS For Both HTTP and HTTPS](https://cdn.rawgit.com/svanoort/python-client-benchmarks/full-aws-benchmarks/aws-to-aws-both-rps.png)
+![AWS Loopback](https://cdn.rawgit.com/svanoort/python-client-benchmarks/master/aws-loopback-combined-chart.svg)
 
-![AWS-to-AWS Throughput For Both HTTP and HTTPS](https://cdn.rawgit.com/svanoort/python-client-benchmarks/full-aws-benchmarks/aws-to-aws-both-throughput.png)
+![AWS-to-AWS RPS For Both HTTP and HTTPS](https://cdn.rawgit.com/svanoort/python-client-benchmarks/master/aws-to-aws-both-rps.svg)
+
+![AWS-to-AWS Throughput For Both HTTP and HTTPS](https://cdn.rawgit.com/svanoort/python-client-benchmarks/master/aws-to-aws-both-throughput.svg)
 
 
 # Detailed Results
@@ -79,7 +86,35 @@ Loopback  Test, running on 1 c4.large and making 1 kB requests against a local s
 | urllib3, reuse cnxns: True,  options: Default                                   | 1314.916432521  |                 |
 | urllib, reuse cnxns: False,  options: Default                                   | 902.8386556557  |                 |
 
+Detailed **CPU TIME** Loopback Test, running on 1 c4.large with different request sizes
+
+| Response_size | Requests Time (no cnxn reuse) | pyCurl Time (no cnxn reuse) | Requests Time (cnxn reuse) | pyCurl Time (cnxn reuse) |
+|---------------|-------------------------------|-----------------------------|----------------------------|--------------------------|
+| 4             | 10.780000000000001            | 1.6500000000000004          | 5.259999999999998          | 0.7300000000000004       |
+| 512           | 11.330000000000002            | 1.6499999999999986          | 5.300000000000004          | 0.7399999999999949       |
+| 1024          | 11.420000000000002            | 1.6500000000000057          | 5.329999999999998          | 0.7399999999999949       |
+| 2048          | 11.400000000000006            | 1.6800000000000068          | 5.310000000000002          | 0.769999999999996        |
+| 4096          | 11.400000000000006            | 1.6700000000000017          | 5.329999999999998          | 0.7700000000000102       |
+| 8192          | 11.61999999999999             | 1.6899999999999977          | 5.480000000000004          | 0.769999999999996        |
+| 16384         | 11.799999999999997            | 1.7800000000000011          | 5.609999999999985          | 0.9099999999999966       |
+| 32768         | 13.080000000000013            | 1.8700000000000045          | 6.0                        | 1.0600000000000023       |
+| 65536         | 15.370000000000005            | 2.640000000000015           | 6.429999999999978          | 1.6900000000000261       |
+| 131072        | 19.789999999999992            | 3.3700000000000045          | 9.0                        | 3.1399999999999864       |
+
+**Full data for server-to-server tests:** available in the [Google Sheet](https://docs.google.com/spreadsheets/d/1jxXZb1VfytzJKM9_hZOWxKgiWv21bs1XBLgeHyckO_0/edit?usp=sharing) under the AWS-to-AWS benchmark tab. 
+
+Also available in the [new-aws-results folder](new-aws-results).
 
 # Miscellanea
 build-docker.sh was used to generate the docker image
 ./run-docker.sh will launch the container
+
+# Caveats
+
+* This is only *one* system type and *one* operating system tested
+* I am only trying GET requests to a sample API  
+* I've taken pains to generate data in as scientific and clean a manner as I can reasonably manage (reporting stats over 10k requests), but do not collect per-execution data so there are no error bars
+* HTTPS performance should be taken with an extra grain of salt and only used for rough comparison:
+  + Many different options and configurable settings exist for HTTPS, all with varying performance
+  + There are also multiple TLS/SSL implementations available for libcurl, for sanity's sake I am only testing the default one. 
+  + For similar reasons I'm not testing pyopenssl use in requests (in addition to base requests settings)
