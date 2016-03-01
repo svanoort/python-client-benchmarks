@@ -45,22 +45,23 @@ Logs were collected from each benchmark run, along with vmstat dumps to verify t
 Specs: 
 
 * Amazon Linux (Fedora-based), latest update and all updates installed as of 26-Feb-2016.
-* Enhanced networking, [one source](https://developer.washingtonpost.com/pb/blog/post/2015/12/02/running-network-constrained-applications-on-ec2/) suggests the c4.large has ~517 Mbps of bandwidth per host
+* Enhanced networking, [one source](https://developer.washingtonpost.com/pb/blog/post/2015/12/02/running-network-constrained-applications-on-ec2/) suggests the c4.large has ~517 Mbps of bandwidth per host.
+* Apache Benchmark confirms that ~65 MB is roughly the limit (there are rare cases where 100 MB/s connections may be observed though)
 * 2 vCPUs, Intel Xeon E5-2666 v3 or equivalent (8 ECU)
 * 3.75 GB of RAM
 * 8 GB GP2 EBS volume
 
 # Graphs
 
-![AWS-to-AWS RPS For HTTP](https://cdn.rawgit.com/svanoort/python-client-benchmarks/full-aws-benchmarks/aws-to-aws-http-rps.svg)
+![AWS-to-AWS RPS For HTTP](https://cdn.rawgit.com/svanoort/python-client-benchmarks/full-aws-benchmarks/aws-to-aws-http-rps.png)
 
-![AWS-to-AWS Throughput For HTTP](https://cdn.rawgit.com/svanoort/python-client-benchmarks/full-aws-benchmarks/aws-to-aws-http-throughput.svg)
+![AWS-to-AWS Throughput For HTTP](https://cdn.rawgit.com/svanoort/python-client-benchmarks/full-aws-benchmarks/aws-to-aws-http-throughput.png)
 
-![AWS-to-AWS Loopback](https://cdn.rawgit.com/svanoort/python-client-benchmarks/full-aws-benchmarks/aws-loopback-combined-chart.svg)
+![AWS-to-AWS Loopback](https://cdn.rawgit.com/svanoort/python-client-benchmarks/full-aws-benchmarks/aws-loopback-combined-chart.png)
 
-![AWS-to-AWS RPS For Both HTTP and HTTPS](https://cdn.rawgit.com/svanoort/python-client-benchmarks/full-aws-benchmarks/aws-to-aws-both-rps.svg)
+![AWS-to-AWS RPS For Both HTTP and HTTPS](https://cdn.rawgit.com/svanoort/python-client-benchmarks/full-aws-benchmarks/aws-to-aws-both-rps.png)
 
-![AWS-to-AWS Throughput For Both HTTP and HTTPS](https://cdn.rawgit.com/svanoort/python-client-benchmarks/full-aws-benchmarks/aws-to-aws-both-throughput.svg)
+![AWS-to-AWS Throughput For Both HTTP and HTTPS](https://cdn.rawgit.com/svanoort/python-client-benchmarks/full-aws-benchmarks/aws-to-aws-both-throughput.png)
 
 
 # Detailed Results
