@@ -56,7 +56,7 @@ Specs:
 
 ![AWS-to-AWS Throughput For HTTP](https://cdn.rawgit.com/svanoort/python-client-benchmarks/full-aws-benchmarks/aws-to-aws-http-throughput.svg)
 
-![AWS-to-AWS Loopback](https://cdn.rawgit.com/svanoort/python-client-benchmarks/full-aws-benchmarks/aws-to-aws-loopback-combined-chart.svg)
+![AWS-to-AWS Loopback](https://cdn.rawgit.com/svanoort/python-client-benchmarks/full-aws-benchmarks/aws-loopback-combined-chart.svg)
 
 ![AWS-to-AWS RPS For Both HTTP and HTTPS](https://cdn.rawgit.com/svanoort/python-client-benchmarks/full-aws-benchmarks/aws-to-aws-both-rps.svg)
 
