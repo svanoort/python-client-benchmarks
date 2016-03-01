@@ -6,7 +6,7 @@ Benchmarking different python HTTP clients, using a small, high-performance samp
 
 [To answer a StackOverflow question: how much does performance differ, for python HTTP clients?](http://stackoverflow.com/a/32899936/95122)
 
-This provides a Python client library benchmarking tool and a simply but high-performance API (HTTP and HTTPS) to use in benchmarking.
+This provides a Python client library benchmarking tool and a simple but high-performance API (HTTP and HTTPS) to use in benchmarking.
 
 Oh, and of course, results in a controlled environment!
 
