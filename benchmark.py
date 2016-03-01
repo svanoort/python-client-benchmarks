@@ -1,4 +1,4 @@
-#/usr/bin/env/python
+#!/usr/bin/env python
 import timeit
 import time
 import string
@@ -22,11 +22,16 @@ except:
         from io import StringIO
 import requests, urllib, urllib2, urllib3
 
-def run_test(library, url, cycles, connection_reuse, options, setup_test, run_test, delay=None):
+def run_test(library, url, cycles, connection_reuse, options, setup_test, run_test, delay=None, timer=None):
     """ Runs a benchmark, showing start & stop 
         the setup_test is a String.template with $url as an option
         the run_test allows for the same
     """
+    TIMER = timeit.default_timer
+
+    if timer and timer.lower() == 'cpu':
+        TIMER = time.clock  # Linux only
+
     print("START testing {0} performance with {1} cycles and connection reuse {2}".format(library, cycles, connection_reuse))
     print("Options: {0}".format(options))
 
@@ -35,7 +40,7 @@ def run_test(library, url, cycles, connection_reuse, options, setup_test, run_te
         run_cmd = run_cmd + "; time.sleep({0})".format(delay)
     setup_cmd = string.Template(setup_test).substitute(url=url)
 
-    mytime = timeit.timeit(stmt=run_cmd, setup=setup_cmd, number=cycles)
+    mytime = timeit.timeit(stmt=run_cmd, setup=setup_cmd, number=cycles, timer=TIMER)
     if delay:
         mytime = mytime - (delay * cycles)
 
@@ -45,13 +50,7 @@ def run_test(library, url, cycles, connection_reuse, options, setup_test, run_te
     return result
 
 def run_size_benchmarks(url='', cycles=10, delay=None, output_file=None, length_api_format='/length/$length', **kwargs):
-    timer_type = kwargs.get('timer')
-    TIMER = timeit.default_timer
-
-    if timer_type and timer_type.lower() == 'cpu':
-        TIMER = time.clock  # Linux only
-
-
+    timer_type = kwargs.get('timer')    
 
     """ Run variable-size benchmarks, where URL is the base url """
     sizes = [4, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536, 131072]  # Yields ~10 GB of traffic, be careful!
@@ -97,7 +96,7 @@ def run_size_benchmarks(url='', cycles=10, delay=None, output_file=None, length_
     for size in sizes:
         temp_url = url + string.Template(length_api_format).substitute(length=size)
         for test in TEST_TYPES:
-            result = run_test(test[0], temp_url, cycles, test[1], test[2], test[3], test[4], delay=delay)
+            result = run_test(test[0], temp_url, cycles, test[1], test[2], test[3], test[4], delay=delay, timer=timer_type)
             del result[3]  # Don't need cycles
             result.insert(0, size)
             all_results.append(result)
@@ -126,10 +125,6 @@ def run_all_benchmarks(url='', cycles=10, delay=None, output_file=None, **kwargs
     tests = list()
 
     timer_type = kwargs.get('timer')
-    TIMER = timeit.default_timer
-
-    if timer_type and timer_type.lower() == 'cpu':
-        TIMER = time.clock  # Linux only
 
     # Library, cnxn_reuse, options, setup, run_stmt
     # Requests
@@ -227,7 +222,7 @@ def run_all_benchmarks(url='', cycles=10, delay=None, output_file=None, **kwargs
         "body = urllib.urlopen('$url').read()"))
 
     for test in tests:
-        my_result = run_test(test[0], url, cycles, test[1], test[2], test[3], test[4], delay=delay)
+        my_result = run_test(test[0], url, cycles, test[1], test[2], test[3], test[4], delay=delay, timer=timer_type)
         results.append((test[0], test[1], test[2], my_result[-1]))
 
     if output_file:

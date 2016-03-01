@@ -1,0 +1,9 @@
+url,cycles,delay
+https://127.0.0.1:4443/length/1024,10000,
+Library,Reuse Connections?,Options,Time
+requests,False,Default,68.36059188842773
+requests,True,Default,9.91195821762085
+pycurl,True,"Reuse handle, don't save body",5.312528133392334
+pycurl,True,"Reuse handle, save response to new cStringIO buffer",5.341747045516968
+pycurl,False,"Reuse handle, save response to new cStringIO buffer",52.81627798080444
+pycurl,False,"New handle, save response to new cStringIO buffer",52.99567699432373

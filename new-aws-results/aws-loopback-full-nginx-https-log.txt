@@ -1,0 +1,25 @@
+RUNNING PYTHON CLIENT BENCHMARKS WITH ARGS: {'benchmark_type': 'full', 'url': 'https://127.0.0.1:4443/length/1024', 'output_file': 'new-aws-results/aws-loopback-full-nginx-https.csv', 'length_api_format': '/length/$length', 'timer': 'real', 'delay': None, 'cycles': 10000}
+START testing requests performance with 10000 cycles and connection reuse False
+Options: Default
+END testing result: 68.3605918884
+ 
+START testing requests performance with 10000 cycles and connection reuse True
+Options: Default
+END testing result: 9.91195821762
+ 
+START testing pycurl performance with 10000 cycles and connection reuse True
+Options: Reuse handle, don't save body
+END testing result: 5.31252813339
+ 
+START testing pycurl performance with 10000 cycles and connection reuse True
+Options: Reuse handle, save response to new cStringIO buffer
+END testing result: 5.34174704552
+ 
+START testing pycurl performance with 10000 cycles and connection reuse False
+Options: Reuse handle, save response to new cStringIO buffer
+END testing result: 52.8162779808
+ 
+START testing pycurl performance with 10000 cycles and connection reuse False
+Options: New handle, save response to new cStringIO buffer
+END testing result: 52.9956769943
+ 

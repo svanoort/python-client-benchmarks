@@ -1,0 +1,47 @@
+NEW BENCHMARK CONFIG:
+
+# Run 1 & 2, aws to aws: AWS server to server, 2x AWS c4.large instances, running up to date Amazon linux 
+Installation from ../aws-setup.sh
+
+Benchmark results (CSV) saved to aws-to-aws-nginx-http.csv
+  Run log (terminal output) saved to aws-to-aws-nginx-http-log.txt
+
+Benchmark results (CSV) saved to aws-to-aws-nginx-https.csv
+  Run log (terminal output) saved to aws-to-aws-nginx-https-log.txt
+Server vmstat (every 10 sec with timestamp) - saved to vmstat-log-server-hit-by-client-https-test.txt
+
+
+
+-- DONE WITH COMMIT HASH 487d68134db541c01eaa977ac43aea64ba5baaab --
+
+Image v2.0 (pulled from dockerhub)
+
+# Client commands
+python benchmark.py --cycles 10000 --url http://172.31.22.99:8080 --benchmark-type size --output-file new-aws-results/aws-to-aws-nginx-http.csv | tee new-aws-results/aws-to-aws-nginx-http-log.txt
+
+(and same, but https & port 4443)
+
+Top reveals that during HTTPS tests, CPU runs ~50%+ for python process
+
+# Server:
+Start server:
+sudo docker run --rm -i -t -w /tmp -p 4443:443 -p 8080:80 svanoort/client-flask-demo:2.0
+
+vmstat 1 reveals that CPU is mostly in wait on I/O mode on the server, sometimes CPU goes as high as 40%
+Saved results by: vmstat -t 10 | tee https-vmstat.txt
+
+# TESTING CLIENT-LOOPBACK ON ITSELF
+DONE WITH COMMIT HASH 7af6ad13ea2f32c84b6dd55456dff2eda35801af 
+(this includes fix for urllib3 issues, and ended up commenting out urllib3 & urllib bits because crashy with verify errors)
+
+In one terminal, start client:
+
+sudo docker run --rm -i -t -w /tmp -p 4443:443 -p 8080:80 svanoort/client-flask-demo:2.0
+
+In another terminal, benchmark it fully without HTTPS, using 1024B requests
+
+python benchmark.py --cycles 10000 --url https://127.0.0.1:8080/length/1024 --output-file new-aws-results/aws-loopback-full-nginx-http.csv | tee new-aws-results/aws-loopback-full-nginx-http-log.txt
+
+python benchmark.py --cycles 10000 --url https://127.0.0.1:4443/length/1024 --output-file new-aws-results/aws-loopback-full-nginx-https.csv | tee new-aws-results/aws-loopback-full-nginx-https-log.txt
+
+NOTE: in top, load average sometimes hits 2.0, python benchmark consistently hits 60%
