@@ -61,17 +61,17 @@ Specs:
 
 # Graphs
 
-![AWS-to-AWS RPS For HTTP](https://cdn.rawgit.com/svanoort/python-client-benchmarks/master/aws-to-aws-http-rps.svg)
+![AWS-to-AWS RPS For HTTP](https://cdn.combinatronics.com/svanoort/python-client-benchmarks/master/aws-to-aws-http-rps.svg)
 
-![AWS Loopback CPU use HTTP](https://cdn.rawgit.com/svanoort/python-client-benchmarks/master/aws-loopback-http-cputime.svg)
+![AWS Loopback CPU use HTTP](https://cdn.combinatronics.com/svanoort/python-client-benchmarks/master/aws-loopback-http-cputime.svg)
 
-![AWS-to-AWS Throughput For HTTP](https://cdn.rawgit.com/svanoort/python-client-benchmarks/master/aws-to-aws-http-throughput.svg)
+![AWS-to-AWS Throughput For HTTP](https://cdn.combinatronics.com/svanoort/python-client-benchmarks/master/aws-to-aws-http-throughput.svg)
 
-![AWS Loopback](https://cdn.rawgit.com/svanoort/python-client-benchmarks/master/aws-loopback-combined-chart.svg)
+![AWS Loopback](https://cdn.combinatronics.com/svanoort/python-client-benchmarks/master/aws-loopback-combined-chart.svg)
 
-![AWS-to-AWS RPS For Both HTTP and HTTPS](https://cdn.rawgit.com/svanoort/python-client-benchmarks/master/aws-to-aws-both-rps.svg)
+![AWS-to-AWS RPS For Both HTTP and HTTPS](https://cdn.combinatronics.com/svanoort/python-client-benchmarks/master/aws-to-aws-both-rps.svg)
 
-![AWS-to-AWS Throughput For Both HTTP and HTTPS](https://cdn.rawgit.com/svanoort/python-client-benchmarks/master/aws-to-aws-both-throughput.svg)
+![AWS-to-AWS Throughput For Both HTTP and HTTPS](https://cdn.combinatronics.com/svanoort/python-client-benchmarks/master/aws-to-aws-both-throughput.svg)
 
 
 # Detailed Results
