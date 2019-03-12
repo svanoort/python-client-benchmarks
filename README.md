@@ -119,8 +119,8 @@ Detailed **CPU TIME** Loopback Test, running on 1 c4.large with different reques
 Also available in the [new-aws-results folder](new-aws-results).
 
 ## Miscellanea
-`build-docker.sh` was used to generate the docker image
-`./run-docker.sh` will launch the container
+* `build-docker.sh` was used to generate the docker image
+* `./run-docker.sh` will launch the container
 
 ## Caveats
 
