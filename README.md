@@ -2,7 +2,7 @@
 
 Benchmarking different python HTTP clients, using a small, high-performance sample API. 
 
-# Why?
+## Why?
 
 [To answer a StackOverflow question: how much does performance differ, for python HTTP clients?](http://stackoverflow.com/a/32899936/95122)
 
@@ -10,28 +10,38 @@ This provides a Python client library benchmarking tool and a simple but high-pe
 
 Oh, and of course, results in a controlled environment!
 
-# How do I run the test server?
+## How do I run the test server?
 In one terminal:
-* docker run --rm -i -t -w /tmp -p 4443:443 -p 8080:80 svanoort/client-flask-demo:2.0
-* OR: (sudo) ./build-docker.sh && ./run-docker.sh
+```bash
+docker run --rm -i -t -w /tmp -p 4443:443 -p 8080:80 svanoort/client-flask-demo:2.0
+```
+Or:
+```bash
+./build-docker.sh && ./run-docker.sh
+```
+
+You may beed to prefix commands with `sudo`.
 
 The test server will expose several API endpoints, with HTTP responses on port 8080 & HTTPS (self-signed cert) on port 4443:
-* /ping - returns "pong"
-* /bigger - returns a fixed ~585B JSON response
-* /length/\<integer\> - returns a fixed-length random binary response of $integer bytes. The first time this is generated and cached, then it is served from cache.
+* `/ping` - returns "pong"
+* `/bigger` - returns a fixed ~585B JSON response
+* `/length/\<integer\>` - returns a fixed-length random binary response of $integer bytes. The first time this is generated and cached, then it is served from cache.
 
-# How do I run the benchmark client?
-It's a command line utility, and has help via "python benchmark.py -h"
+## How do I run the benchmark client?
+It's a command line utility and has help via `python benchmark.py -h`
+
+```bash
 python benchmark.py http://host:port/
+```
 
-# How
-1. On one server or system 
+## How
+On one server or system:
 
 1. In one terminal, build & run the docker image to start a test server: `sh build-docker.sh && sh run-docker.sh`
-2. In another terminal, run: python benchmark.py --cycles 10000
+2. In another terminal, run: `python benchmark.py --cycles 10000`
 3. Tests take a few minutes minute to finish, then you can close process in terminal 1. 
 
-# Short Summary of Results
+## Short Summary of Results
 
 PyCurl is much faster than Requests (or other HTTP client libraries), generally completing smaller requests 2-3x as fast, and requires 3-10x less CPU time.  This is most visible with connection creation for small requests; given large enough requests (above 100 kB/s), Requests can still saturate a fast connection quite easily even without concurrent HTTP requests (assuming that all post-request processing is done separately) on a fast CPU.
 
@@ -42,7 +52,7 @@ On this system:
 * requests takes about **1078** CPU-microseconds to *open a new connection* and issue a request (no connection reuse), or ~552 microseconds to open
 * CPU-limited peak throughput with PyCurl is *roughly* 50%-100% better than requests with very large request sizes, assuming an extremely fast network connection relative to CPU (in this case several GBit)
 
-# Benchmark Setup
+## Benchmark Setup
 
 * Testing with two c4.large instances in AWS, one running a client, and the other running the server. 
 * All tests issued 10000 sequential requests to minimize the impact of noise
@@ -59,7 +69,7 @@ Specs:
 * 3.75 GB of RAM
 * 8 GB GP2 EBS volume
 
-# Graphs
+## Graphs
 
 ![AWS-to-AWS RPS For HTTP](https://cdn.rawgit.com/svanoort/python-client-benchmarks/master/aws-to-aws-http-rps.svg)
 
@@ -74,7 +84,7 @@ Specs:
 ![AWS-to-AWS Throughput For Both HTTP and HTTPS](https://cdn.rawgit.com/svanoort/python-client-benchmarks/master/aws-to-aws-both-throughput.svg)
 
 
-# Detailed Results
+## Detailed Results
 
 Loopback  Test, running on 1 c4.large and making 1 kB requests against a local server
 
@@ -108,11 +118,11 @@ Detailed **CPU TIME** Loopback Test, running on 1 c4.large with different reques
 
 Also available in the [new-aws-results folder](new-aws-results).
 
-# Miscellanea
-build-docker.sh was used to generate the docker image
-./run-docker.sh will launch the container
+## Miscellanea
+* `build-docker.sh` was used to generate the docker image
+* `./run-docker.sh` will launch the container
 
-# Caveats
+## Caveats
 
 * This is only *one* system type and *one* operating system tested
 * I am only trying GET requests to a sample API  
