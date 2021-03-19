@@ -3,7 +3,7 @@ gevent==1.0.2
 greenlet==0.4.9
 gunicorn==19.4.5
 itsdangerous==0.24
-Jinja2==2.8
+Jinja2==2.11.3
 MarkupSafe==0.23
 meinheld==0.5.8
 pycurl==7.43.0
