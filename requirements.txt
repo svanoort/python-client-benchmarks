@@ -10,6 +10,6 @@ pycurl==7.43.0
 requests==2.9.1
 supervisor==3.2.1
 supervisor-stdout==0.1.1
-urllib3==1.14
+urllib3==1.26.5
 Werkzeug==0.11.4
 wheel==0.29.0
