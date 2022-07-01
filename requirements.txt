@@ -8,7 +8,7 @@ MarkupSafe==0.23
 meinheld==0.5.8
 pycurl==7.43.0
 requests==2.9.1
-supervisor==3.2.1
+supervisor==3.2.4
 supervisor-stdout==0.1.1
 urllib3==1.14
 Werkzeug==0.11.4
