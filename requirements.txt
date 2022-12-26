@@ -12,4 +12,4 @@ supervisor==3.2.1
 supervisor-stdout==0.1.1
 urllib3==1.14
 Werkzeug==0.11.4
-wheel==0.29.0
+wheel==0.38.1
